@@ -1,0 +1,62 @@
+﻿<Window x:Class="HotelBookingSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HotelBookingSystem.ViewModels"
+        xmlns:models="clr-namespace:HotelBookingSystem.Models"
+        Title="Бронирование номеров" Height="600" Width="900">
+
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type models:Room}">
+            <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Margin="5" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="{Binding NumberWithType}" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Type}"/>
+                    <TextBlock Text="{Binding PricePerNight, StringFormat='Price: {0:C2}/night'}"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Booking">
+                <MenuItem Header="New Booking" Command="{Binding BookRoomCommand}"/>
+                <MenuItem Header="Edit Booking" Command="{Binding EditBookingCommand}"/>
+                <MenuItem Header="Cancel Booking" Command="{Binding CancelBookingCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Available Rooms" Margin="5">
+                <ItemsControl ItemsSource="{Binding Rooms}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </GroupBox>
+
+            <GroupBox Grid.Column="1" Header="Current Bookings" Margin="5">
+                <DataGrid ItemsSource="{Binding Bookings}" 
+                          AutoGenerateColumns="False"
+                          SelectedItem="{Binding SelectedBooking}"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Guest" Binding="{Binding GuestName}"/>
+                        <DataGridTextColumn Header="Room" Binding="{Binding RoomNumber}"/>
+                        <DataGridTextColumn Header="Check-in" Binding="{Binding CheckInDate, StringFormat=d}"/>
+                        <DataGridTextColumn Header="Check-out" Binding="{Binding CheckOutDate, StringFormat=d}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
+</Window>
