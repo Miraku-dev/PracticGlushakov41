@@ -1,0 +1,24 @@
+<Window x:Class="HotelBookingSystem.View.BookingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Бронирование номера" Height="300" Width="400">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="ФИО:"/>
+            <TextBox Text="{Binding FullName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Дата заезда:"/>
+            <DatePicker SelectedDate="{Binding CheckInDate, Mode=TwoWay}"/>
+            <TextBlock Text="Дата выезда:"/>
+            <DatePicker SelectedDate="{Binding CheckOutDate, Mode=TwoWay}"/>
+            <Button Content="Забронировать" Command="{Binding BookCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>

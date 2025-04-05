@@ -1,0 +1,83 @@
+<Window x:Class="HotelBookingSystem.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Система бронирования отеля" Height="500" Width="800">
+    <Window.Resources>
+        <!-- Стиль для кнопок -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- DataTemplate для карточки номера -->
+        <DataTemplate x:Key="RoomTemplate">
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5" Background="#F5F5F5">
+                <StackPanel>
+                    <TextBlock Text="{Binding RoomNumber, StringFormat='Номер: {0}'}" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Price, StringFormat='Цена: {0:C}'}" />
+                    <TextBlock Text="{Binding Status}"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Меню -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Сохранить" Command="{Binding SaveCommand}" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="Выход" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Номера">
+                <MenuItem Header="Просмотреть номера" Command="{Binding ViewRoomsCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Бронирование">
+                <MenuItem Header="Забронировать номер" Command="{Binding BookRoomCommand}" InputGestureText="Ctrl+N"/>
+                <MenuItem Header="Редактировать бронь" Command="{Binding EditBookingCommand}" InputGestureText="Ctrl+E"/>
+                <MenuItem Header="Отменить бронь" Command="{Binding CancelBookingCommand}" InputGestureText="Ctrl+D"/>
+            </MenuItem>
+            <MenuItem Header="Настройки"/>
+        </Menu>
+
+        <!-- Панель инструментов -->
+        <ToolBar Grid.Row="1">
+            <Button Content="Забронировать номер" Command="{Binding BookRoomCommand}" ToolTip="Ctrl+N"/>
+            <Button Content="Редактировать бронь" Command="{Binding EditBookingCommand}" ToolTip="Ctrl+E"/>
+            <Button Content="Отменить бронь" Command="{Binding CancelBookingCommand}" ToolTip="Ctrl+D"/>
+        </ToolBar>
+
+        <!-- Список номеров -->
+        <ListView Grid.Row="2" ItemsSource="{Binding Rooms}" 
+                  SelectedItem="{Binding SelectedRoom, Mode=TwoWay}"
+                  ItemTemplate="{StaticResource RoomTemplate}"/>
+
+        <!-- Индикатор загрузки и чат -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="5">
+            <ProgressBar IsIndeterminate="{Binding IsLoading}" Width="100" Height="20" Margin="5"/>
+            <TextBlock Text="{Binding ChatMessage}" Margin="5"/>
+            <TextBox Text="{Binding NewMessage, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="5"/>
+            <Button Content="Отправить" Command="{Binding SendMessageCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
