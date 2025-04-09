@@ -1,0 +1,39 @@
+﻿@model IEnumerable<PhoneBook.Models.Contact>
+
+@{
+    ViewData["Title"] = "Phone Directory";
+}
+
+<h1>Phone Directory</h1>
+
+<p>
+    <a asp-action="Create">Add New Contact</a>
+</p>
+
+<form asp-action="Search" method="get">
+    <div class="form-group">
+        <label for="name">Search by Name:</label>
+        <input type="text" name="name" class="form-control" />
+        <input type="submit" value="Search" class="btn btn-primary" />
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+            </tr>
+        }
+    </tbody>
+</table>
